@@ -44,7 +44,6 @@ public class CameraController : MonoBehaviour
         rotacionEjeX = Mathf.Clamp(rotacionEjeX, -90, 90);
 
         // 3- Rotamos en valores locales
-        Debug.Log(rotacionEjeX);
         transform.localRotation = Quaternion.Euler(-rotacionEjeX, 0, 0);
     }
 }

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Bala : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    private float fuerza = 5f;
+
     void Start()
     {
-        
+        Destroy(gameObject, 3);
     }
 
-    // Update is called once per frame
-    void Update()
+    public float getFuerza()
     {
-        
+        return fuerza;
     }
 }

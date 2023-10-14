@@ -12,7 +12,9 @@ public class Weapon : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Instantiate(balaPrefab, spawnPoint.position, Quaternion.identity);
+            Bala bala = Instantiate(balaPrefab, spawnPoint.position, Quaternion.identity);
+            Rigidbody rb = bala.GetComponent<Rigidbody>();
+            rb.AddRelativeForce(transform.up * bala.getFuerza(), ForceMode.Impulse);
         }
     }
 }

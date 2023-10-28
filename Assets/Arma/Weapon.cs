@@ -142,4 +142,9 @@ public class Weapon : MonoBehaviour
 
         }
     }
+
+    public bool getIsHitscan()
+    {
+        return isHitscan;
+    }
 }

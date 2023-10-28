@@ -78,9 +78,10 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < weapons.Length; i++) {
             weapons[i].enabled = (i == index);
-            Debug.Log(i == index);
         }
 
         indexWeaponActiva = index;
+
+        GameManager.instance.updateArmaActualUI(weapons[index].getIsHitscan());
     }
 }

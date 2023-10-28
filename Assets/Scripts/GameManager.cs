@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TMP_Text text;
 
+    [SerializeField]
+    TMP_Text armaActual;
+
     int totalEnemyCount;
-    int currentEnemyCount;
+    int currentEnemyKilled = 0;
 
     private void Awake()
     {
@@ -21,18 +24,28 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         totalEnemyCount = GameObject.FindGameObjectsWithTag("Enemigo").Length;
-        currentEnemyCount = totalEnemyCount;
         updateUI();
     }
     
     public void updateEnemyCount()
     {
-        currentEnemyCount--;
+        currentEnemyKilled++;
         updateUI();
     }
 
     void updateUI()
     {
-        text.text = currentEnemyCount.ToString() + " / " + totalEnemyCount.ToString();
+        text.text = currentEnemyKilled.ToString() + " / " + totalEnemyCount.ToString();
+    }
+
+    public void updateArmaActualUI(bool isHitscan)
+    {
+        armaActual.text = "Proyectil";
+
+        if (isHitscan)
+        {
+            armaActual.text = "Raycast";
+        }
+
     }
 }

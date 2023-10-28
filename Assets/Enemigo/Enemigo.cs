@@ -4,37 +4,18 @@ using UnityEngine;
 
 public class Enemigo : MonoBehaviour
 {
-    [SerializeField]
-    int vida = 3;
+    Vida vida;
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        Debug.Log(other.gameObject.tag);
-
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            damage();
-            Destroy(other.gameObject);
-        }
-    }
-
-    private void damage()
-    {
-        vida--;
-        if (vida == 0)
-        {
-            Destroy(this.gameObject);
-            GameManager.instance.updateEnemyCount();
-        }
+        vida = GetComponent<Vida>();
     }
 
     public void RaycastDamage(GameObject other)
     {
-        Debug.Log(other.tag);
-
         if (other.CompareTag("Weapon"))
         {
-            damage();
+            vida.damage(gameObject);
         }
     }
 }

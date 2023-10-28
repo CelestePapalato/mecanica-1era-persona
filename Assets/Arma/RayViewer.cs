@@ -5,6 +5,8 @@ using UnityEngine;
 public class RayViewer : MonoBehaviour
 {
 
+    [Header("SOLO DEBUG")]
+
     public float weaponRange;
 
     [SerializeField]

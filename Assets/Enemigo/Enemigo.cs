@@ -7,16 +7,34 @@ public class Enemigo : MonoBehaviour
     [SerializeField]
     int vida = 3;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Bala"))
+        Debug.Log(other.gameObject.tag);
+
+        if (other.gameObject.CompareTag("Bullet"))
         {
-            vida--;
-            if(vida == 0)
-            {
-                Destroy(this.gameObject);
-                GameManager.instance.updateEnemyCount();
-            }
+            damage();
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void damage()
+    {
+        vida--;
+        if (vida == 0)
+        {
+            Destroy(this.gameObject);
+            GameManager.instance.updateEnemyCount();
+        }
+    }
+
+    public void RaycastDamage(GameObject other)
+    {
+        Debug.Log(other.tag);
+
+        if (other.CompareTag("Weapon"))
+        {
+            damage();
         }
     }
 }

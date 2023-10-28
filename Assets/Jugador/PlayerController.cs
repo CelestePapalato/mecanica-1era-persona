@@ -17,10 +17,16 @@ public class PlayerController : MonoBehaviour
     // Componentes
     Rigidbody rb;
 
+    private Weapon[] weapons;
+    private int indexWeaponActiva;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
+
+        weapons = GetComponentsInChildren<Weapon>();
+        activarWeapon(0);
     }
 
     // Update is called once per frame
@@ -28,7 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         mover();
         agregarDrag();
-        
+        cambiarWeapon();
     }
 
     void mover()
@@ -52,26 +58,28 @@ public class PlayerController : MonoBehaviour
 
     private void agregarDrag()
     {
-        // Inicializamos el vector velocidadExcedida como el opuesto a la velocidad del rigidbody
         Vector3 velocidadExcedida = rb.velocity * -1;
-
-        // Seteamos el valor de velocidad excedida del eje y en 0 para no afectar a la gravedad
         velocidadExcedida.y = 0;
-
-        //Multiplicamos la velocidad excedida por esta fracción. El objetivo es
-        // suavizar el efecto de la desacelerada que hará la bola
-        // El denominador nunca será cero porque para eso el deltaTime debe ser 1,
-        // y por su naturaleza es particularmente imposible que suceda.
         velocidadExcedida *= 1f / (1f - Time.deltaTime * drag);
-
-        // Aplicamos la aceleración que detendrá a la bola
         rb.AddForce(velocidadExcedida, modoDrag);
+    }
 
-        /*Otros métodos para limitar la velocidad del rigidbody:
-            >>> Vector3.ClampMagnitude
-            >>> Vector3.SmoothDamp
-            >>> Operaciones de resta y suma directas con la velocidad del rigidbody
-            >>> No es recomendable asignarle un nuevo vector al rigidbody
-        */
+    private void cambiarWeapon() {
+
+        if (Input.GetAxisRaw("Mouse ScrollWheel") != 0f) {
+
+            int indexNuevaWeapon = (weapons.Length - 1 == indexWeaponActiva) ? 0 : indexWeaponActiva + 1;
+            activarWeapon(indexNuevaWeapon);
+        }
+
+    }
+
+    private void activarWeapon(int index)
+    {
+        for (int i = 0; i < weapons.Length; i++) {
+            weapons[i].enabled = (i == index);
+        }
+
+        indexWeaponActiva = index;
     }
 }

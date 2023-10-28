@@ -8,13 +8,26 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField]
-    TMP_Text text;
+    int tiempoDeJuego = 30;
+
+    [SerializeField]
+    private Enemigo enemigo_prefab;
+
+    [SerializeField]
+    private Transform[] posicionesSpawn;
+
+    [SerializeField]
+    TMP_Text tiempoUI;
+
+    [SerializeField]
+    TMP_Text enemyCount;
 
     [SerializeField]
     TMP_Text armaActual;
 
-    int totalEnemyCount;
+    int totalEnemyCount = 0;
     int currentEnemyKilled = 0;
+    float tiempoRestante;
 
     private void Awake()
     {
@@ -23,10 +36,32 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        totalEnemyCount = GameObject.FindGameObjectsWithTag("Enemigo").Length;
+        ComenzarJuego();
         updateUI();
     }
     
+    private void ComenzarJuego()
+    {
+        foreach (Transform spawnPoint in posicionesSpawn)
+        {
+            Instantiate(enemigo_prefab, spawnPoint.position, Quaternion.identity);
+            totalEnemyCount++;
+        }
+
+        StartCoroutine(ComenzarCronometro());        
+    }
+
+    private IEnumerator ComenzarCronometro()
+    {
+        tiempoRestante = tiempoDeJuego;
+        while(tiempoRestante > 0)
+        {
+            tiempoUI.text = tiempoRestante.ToString();
+            yield return new WaitForSeconds(1.0f);
+            tiempoRestante--;
+        }
+    }
+
     public void updateEnemyCount()
     {
         currentEnemyKilled++;
@@ -35,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     void updateUI()
     {
-        text.text = currentEnemyKilled.ToString() + " / " + totalEnemyCount.ToString();
+        enemyCount.text = currentEnemyKilled.ToString() + " / " + totalEnemyCount.ToString();
     }
 
     public void updateArmaActualUI(bool isHitscan)

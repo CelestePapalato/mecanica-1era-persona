@@ -132,7 +132,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 767641378278932769}
   isHitscan: 0
   balaPrefab: {fileID: -9050822049602777454, guid: 3616cc2ab9bd69c4ab6f3104e217055e, type: 3}
-  fuerza: 30
+  fuerza: 25
   weaponRange: 0
   fireRate: 0.25
   cam: {fileID: 0}

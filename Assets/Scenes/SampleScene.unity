@@ -1545,6 +1545,10 @@ PrefabInstance:
       value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 9132613818476004749, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: fireRate
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132613818476004749, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

@@ -11,6 +11,9 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private bool isHitscan;
 
+    [SerializeField]
+    private float fireRate = 0.25f;
+
     [Header("Si el arma es un proyectil")]
     [SerializeField]
     private Bala balaPrefab;
@@ -21,15 +24,11 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private float weaponRange;
     [SerializeField]
-    private float fireRate = 0.25f;
-    [SerializeField]
     private Camera cam;
 
-    private float shotTimer = 0f;
+    private bool canShoot = true;
 
     private LineRenderer lineRenderer;
-    private bool isLineRendering = false;
-    private float lineTimer = 0f;
     private float lineDuration = 0.07f;
 
     private void Start()
@@ -37,7 +36,7 @@ public class Weapon : MonoBehaviour
         if (isHitscan)
         {
             lineRenderer = GetComponent<LineRenderer>();
-            controlarLineRenderer(false);
+            lineRenderer.enabled = false;
 
             RayViewer rayViewer = GetComponent<RayViewer>();
             if (rayViewer)
@@ -62,48 +61,26 @@ public class Weapon : MonoBehaviour
 
     private void disparoProyectil()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canShoot)
         {
+            // Controlamos la cadencia de tiro con una corutina
+            StartCoroutine(controlarCadencia());
             Bala bala = Instantiate(balaPrefab, spawnPoint.position, Quaternion.identity);
             Rigidbody rb = bala.GetComponent<Rigidbody>();
             rb.AddRelativeForce(transform.up * fuerza, ForceMode.Impulse);
         }
     }
 
-    private void controlarLineRenderer(bool value)
-    {
-        lineRenderer.enabled = value;
-    }
-
-    private void temporizadorLineRenderer()
-    {
-        if (!isLineRendering)
-        {
-            return;
-        }
-
-        lineTimer += Time.deltaTime;
-
-        if (lineTimer > lineDuration)
-        {
-            lineTimer = 0f;
-            isLineRendering = false;
-            controlarLineRenderer(false);
-        }
-    }
-
     private void disparoHitscan()
     {
-        shotTimer += Time.deltaTime;
-
         // Si el jugador puede disparar y presionó el botón
-        if (Input.GetMouseButtonDown(0) && shotTimer > fireRate)
+        if (Input.GetMouseButtonDown(0) && canShoot)
         {
-            // seteamos el timer de la cadencia de tiro en 0
-            shotTimer = 0f;
+            // Controlamos la cadencia de tiro con una corutina
+            StartCoroutine(controlarCadencia());
 
             // activamos el lineRenderer
-            controlarLineRenderer(true);
+            StartCoroutine(temporizadorLineRenderer());
 
             // Obtenemos el punto origen del disparo (centro de la cámara) para el raycast
             Vector3 origen = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
@@ -138,9 +115,21 @@ public class Weapon : MonoBehaviour
                 lineRenderer.SetPosition(1, origen + cam.transform.forward * weaponRange);
             }
 
-            isLineRendering = true;
-
         }
+    }
+
+    private IEnumerator temporizadorLineRenderer()
+    {
+        lineRenderer.enabled = true;
+        yield return new WaitForSeconds(lineDuration);
+        lineRenderer.enabled = false;
+    }
+
+    private IEnumerator controlarCadencia()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(fireRate);
+        canShoot = true;
     }
 
     public bool getIsHitscan()

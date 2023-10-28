@@ -7,6 +7,8 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     private Bala balaPrefab;
     [SerializeField]
+    private float fuerza;
+    [SerializeField]
     private Transform spawnPoint;
     void Update()
     {
@@ -14,7 +16,7 @@ public class Weapon : MonoBehaviour
         {
             Bala bala = Instantiate(balaPrefab, spawnPoint.position, Quaternion.identity);
             Rigidbody rb = bala.GetComponent<Rigidbody>();
-            rb.AddRelativeForce(transform.up * bala.getFuerza(), ForceMode.Impulse);
+            rb.AddRelativeForce(transform.up * fuerza, ForceMode.Impulse);
         }
     }
 }

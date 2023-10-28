@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class Enemigo : MonoBehaviour
 {
-    Vida vida;
+    [SerializeField]
+    private float velocidad;
+
+    private Vida vida;
+    private GameObject jugador;
 
     private void Start()
     {
         vida = GetComponent<Vida>();
+        jugador = GameObject.FindGameObjectWithTag("Player");
     }
+
+    private void Update()
+    {
+        transform.LookAt(jugador.transform);
+        transform.Translate(Vector3.forward * velocidad * Time.deltaTime);
+    }
+
+
 
     public void RaycastDamage(GameObject other)
     {

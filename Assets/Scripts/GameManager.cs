@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -40,10 +41,17 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     TMP_Text textoDerrota;
 
+    [Header("Pausa")]
+    [SerializeField]
+    Canvas pausaCanvas;
+    [SerializeField]
+    TMP_Text textoSensibilidad;
 
     int totalEnemyCount = 0;
     int currentEnemyKilled = 0;
     float tiempoRestante;
+
+    bool finPartida = false;
 
     private void Awake()
     {
@@ -52,11 +60,24 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        pausaCanvas.enabled = false;
         canvasFinDePartida.enabled = false;
         ComenzarJuego();
         updateUI();
     }
-    
+
+    private void Update()
+    {
+        if (finPartida)
+        {
+            return;
+        }
+
+        if (Input.GetButtonDown("Cancel"))
+        {
+            pausarPartida();
+        }
+    }
     private void ComenzarJuego()
     {
         foreach (Transform spawnPoint in posicionesSpawn)
@@ -119,6 +140,7 @@ public class GameManager : MonoBehaviour
         textoDerrota.enabled = false;
         textoVictoria.enabled = true;
         canvasFinDePartida.enabled = true;
+        finPartida = true;
     }
 
     public void perder()
@@ -129,11 +151,34 @@ public class GameManager : MonoBehaviour
         textoDerrota.enabled = true;
         textoVictoria.enabled = false;
         canvasFinDePartida.enabled = true;
+        finPartida = true;
     }
 
     public void recargarEscena()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
+    }
+
+    void pausarPartida()
+    {
+        if(Time.timeScale == 0)
+        {
+            pausaCanvas.enabled = false;
+            Time.timeScale = 1;
+
+            Cursor.lockState = CursorLockMode.Locked;
+            return;
+        }
+        pausaCanvas.enabled = true;
+        Time.timeScale = 0;
+
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void updateSensitivityUI(Slider slider)
+    {
+        float value = slider.value;
+        textoSensibilidad.text = "Sensibilidad: " + value.ToString();
     }
 }

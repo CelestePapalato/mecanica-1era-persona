@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-    // Constantes
     [SerializeField]
-    float sensibilidad;
+    private float sensibilidad;
 
     [SerializeField]
     float minSuavizado = 0.08f;
@@ -55,4 +55,10 @@ public class CameraController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(-rotacionEjeX, 0, 0);
 
     }
+
+    public void cambiarSensibilidad(Slider slider)
+    {
+        sensibilidad = slider.value;
+    }
+
 }

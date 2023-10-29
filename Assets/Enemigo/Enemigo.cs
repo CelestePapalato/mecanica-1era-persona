@@ -1,24 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemigo : MonoBehaviour
 {
     [SerializeField]
-    private float velocidad;
+    private float pathrecalculationRate;
 
-    private Vida vida;
+    private NavMeshAgent agent;
     private GameObject jugador;
 
     private void Start()
     {
-        vida = GetComponent<Vida>();
+        agent = GetComponent<NavMeshAgent>();
         jugador = GameObject.FindGameObjectWithTag("Player");
+        InvokeRepeating("recalculatePath", .2f, pathrecalculationRate);
     }
 
     private void Update()
     {
         transform.LookAt(jugador.transform);
-        transform.Translate(Vector3.forward * velocidad * Time.deltaTime);
     }
+
+    private void recalculatePath()
+    {
+
+        agent.destination = jugador.transform.position;
+    }
+
 }

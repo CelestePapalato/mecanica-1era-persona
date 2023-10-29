@@ -2,28 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+    [Header("Variables de la partida")]
     [SerializeField]
     int tiempoDeJuego = 30;
 
+    [Header("Spawn de enemigos")]
     [SerializeField]
     private Enemigo enemigo_prefab;
 
     [SerializeField]
     private Transform[] posicionesSpawn;
 
+    [Header("Interfaz de usuario")]
     [SerializeField]
     TMP_Text tiempoUI;
+
+    [SerializeField]
+    TMP_Text vidaJugador;
 
     [SerializeField]
     TMP_Text enemyCount;
 
     [SerializeField]
     TMP_Text armaActual;
+
+    [SerializeField]
+    Canvas canvasFinDePartida;
+
+    [SerializeField]
+    TMP_Text textoVictoria;
+
+    [SerializeField]
+    TMP_Text textoDerrota;
+
 
     int totalEnemyCount = 0;
     int currentEnemyKilled = 0;
@@ -36,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        canvasFinDePartida.enabled = false;
         ComenzarJuego();
         updateUI();
     }
@@ -60,12 +77,17 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             tiempoRestante--;
         }
+        perder();
     }
 
     public void updateEnemyCount()
     {
         currentEnemyKilled++;
         updateUI();
+        if(currentEnemyKilled >= totalEnemyCount)
+        {
+            ganar();
+        }
     }
 
     void updateUI()
@@ -82,5 +104,36 @@ public class GameManager : MonoBehaviour
             armaActual.text = "Raycast";
         }
 
+    }
+
+    public void updateVidaJugadorUI(int vida)
+    {
+        vidaJugador.text = vida.ToString();
+    }
+
+    private void ganar()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        StopCoroutine(ComenzarCronometro());
+        Time.timeScale = 0;
+        textoDerrota.enabled = false;
+        textoVictoria.enabled = true;
+        canvasFinDePartida.enabled = true;
+    }
+
+    public void perder()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        StopCoroutine(ComenzarCronometro());
+        Time.timeScale = 0;
+        textoDerrota.enabled = true;
+        textoVictoria.enabled = false;
+        canvasFinDePartida.enabled = true;
+    }
+
+    public void recargarEscena()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 }

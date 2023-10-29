@@ -14,6 +14,7 @@ public class Vida : MonoBehaviour
         if (gameObject.CompareTag("Player"))
         {
             isPlayer = true;
+            GameManager.instance.updateVidaJugadorUI(vida);
         }
     }
 
@@ -25,9 +26,14 @@ public class Vida : MonoBehaviour
         {
             damage(gameObject);
         }
+
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 
-    public void damage(GameObject caller)
+    private void damage(GameObject caller)
     {
         if(caller != gameObject)
         {
@@ -35,14 +41,21 @@ public class Vida : MonoBehaviour
         }
 
         vida--;
+
+        if (isPlayer)
+        {
+            GameManager.instance.updateVidaJugadorUI(vida);
+        }
+
         if (vida == 0)
         {
             if (isPlayer)
             {
+                GameManager.instance.perder();
                 return;
             }
-            Destroy(gameObject);
             GameManager.instance.updateEnemyCount();
+            Destroy(gameObject);
         }
     }
 }

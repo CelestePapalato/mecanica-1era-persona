@@ -99,13 +99,7 @@ public class Weapon : MonoBehaviour
                 // El segundo vértice del lineRenderer será el punto donde golpeó el raycast
                 lineRenderer.SetPosition(1, hit.point);
 
-                // Verificamos que la colisión con la que chocó el raycast sea un enemigo y le
-                // restamos vida
-                Enemigo enemigo = hit.collider.gameObject.GetComponent<Enemigo>();
-                if (enemigo)
-                {
-                    enemigo.RaycastDamage(gameObject);
-                }
+                Instantiate(balaPrefab, hit.point, Quaternion.identity);
 
             }
             // Si el raycast no le dio a nada, el segundo vértice del line Renderer será

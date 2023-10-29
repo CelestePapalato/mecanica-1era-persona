@@ -21,14 +21,4 @@ public class Enemigo : MonoBehaviour
         transform.LookAt(jugador.transform);
         transform.Translate(Vector3.forward * velocidad * Time.deltaTime);
     }
-
-
-
-    public void RaycastDamage(GameObject other)
-    {
-        if (other.CompareTag("Weapon"))
-        {
-            vida.damage(gameObject);
-        }
-    }
 }

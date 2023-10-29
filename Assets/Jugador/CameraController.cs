@@ -27,6 +27,11 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if(Time.timeScale == 0)
+        {
+            return;
+        }
+
         var movimiento = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")).normalized;
         movimiento *= sensibilidad;
 

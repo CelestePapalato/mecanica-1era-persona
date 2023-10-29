@@ -253,14 +253,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 353319072}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.7470714, z: -0, w: 0.6647438}
   m_LocalPosition: {x: -4.4, y: 1.1, z: -1.4889202}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 96.675, z: 0}
 --- !u!114 &353319078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,8 +276,8 @@ MonoBehaviour:
   capaPiso:
     serializedVersion: 2
     m_Bits: 64
-  velocidad: 27
-  drag: 7
+  velocidad: 28
+  drag: 9
   modoDrag: 5
 --- !u!114 &353319079
 MonoBehaviour:
@@ -927,8 +927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc5da74e8d83fc48ad64c8124a3463d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensibilidad: 1
-  suavizado: 0.092
+  sensibilidad: 0.7
+  minSuavizado: 0.085
+  maxSuavizado: 0.14
 --- !u!1 &969223621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,8 +1861,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 963194228}
     m_Modifications:
     - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 601ffdb4bcaf6014a972fdccac705fe0, type: 2}
+    - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 585950584937752661, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
+      propertyPath: m_Parameters.colorGradient.m_ColorSpace
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6049804476885468358, guid: 14331df3022a71d449005ce9e0359cbb, type: 3}
       propertyPath: m_Name

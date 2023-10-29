@@ -6,18 +6,20 @@ public class CameraController : MonoBehaviour
 {
     // Constantes
     [SerializeField]
-    float sensibilidad = 5f;
+    float sensibilidad;
+
     [SerializeField]
-    [Range(0f, 0.3f)] float suavizado = 0.2f;
+    float minSuavizado = 0.08f;
+    [SerializeField]
+    float maxSuavizado;
+
+    Vector2 suavidadV;
 
     // Componentes
     GameObject jugador;
 
     // Variables
     float rotacionEjeX;
-
-    Vector2 suavidadV;
-    Vector2 currentVelocity;
 
     void Start()
     {
@@ -27,22 +29,23 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if(Time.timeScale == 0)
+        if (Time.timeScale == 0)
         {
             return;
         }
 
-        var movimiento = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")).normalized;
-        movimiento *= sensibilidad;
+        var movimiento = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-        // Suavizamos el cambio
-        suavidadV = Vector2.SmoothDamp(suavidadV, movimiento, ref currentVelocity, suavizado);
+        // (1f - Mathf.Abs(movimiento.x)
 
-        // Rotamos al jugador horizontalmente
+        suavidadV.x = Mathf.SmoothStep(suavidadV.x, movimiento.x * sensibilidad, Mathf.Clamp(maxSuavizado * (1f - Mathf.Abs(movimiento.x)), minSuavizado, maxSuavizado));
+        suavidadV.y = Mathf.SmoothStep(suavidadV.y, movimiento.y * sensibilidad, Mathf.Clamp(maxSuavizado * (1f - Mathf.Abs(movimiento.y)), minSuavizado, maxSuavizado));
+
+        // Rotamos al jugador ho1rizontalmente
         jugador.transform.Rotate(Vector3.up, suavidadV.x);
 
         // Rotamos verticalmente la cámara
-        // 1 - Obtenemos la rotación actual de la cámara
+        // 1 - Obtenemos la rotación objetivo de la cámara
         rotacionEjeX += suavidadV.y;
 
         // 2- Limitamos la rotación total a 90 grados
@@ -50,5 +53,6 @@ public class CameraController : MonoBehaviour
 
         // 3- Rotamos en valores locales
         transform.localRotation = Quaternion.Euler(-rotacionEjeX, 0, 0);
+
     }
 }

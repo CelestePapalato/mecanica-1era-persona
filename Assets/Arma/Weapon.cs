@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField]
+    private Bala balaPrefab;
 
     [SerializeField]
     private Transform spawnPoint;
@@ -15,8 +17,6 @@ public class Weapon : MonoBehaviour
     private float fireRate = 0.25f;
 
     [Header("Si el arma es un proyectil")]
-    [SerializeField]
-    private Bala balaPrefab;
     [SerializeField]
     private float fuerza;
 

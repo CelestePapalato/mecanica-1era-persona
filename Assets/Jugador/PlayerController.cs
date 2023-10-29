@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("LayerMask del suelo")]
+    [SerializeField]
+    private LayerMask capaPiso;
     // Constantes
     [Header("Movimiento")]
     [SerializeField]
@@ -16,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     // Componentes
     Rigidbody rb;
+    CapsuleCollider col;
 
     private Weapon[] weapons;
     private int indexWeaponActiva;
@@ -24,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<CapsuleCollider>();
 
         weapons = GetComponentsInChildren<Weapon>();
         activarWeapon(0);
@@ -39,6 +44,12 @@ public class PlayerController : MonoBehaviour
 
     void mover()
     {
+        if((Input.GetAxisRaw("Horizontal") == 0 &&
+            Input.GetAxisRaw("Vertical") == 0) || !onFloor())
+        {
+            return;
+        }
+
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -83,5 +94,10 @@ public class PlayerController : MonoBehaviour
         indexWeaponActiva = index;
 
         GameManager.instance.updateArmaActualUI(weapons[index].getIsHitscan());
+    }
+
+    private bool onFloor()
+    {
+        return Physics.CheckCapsule(col.bounds.center, new Vector3(col.bounds.center.x, col.bounds.min.y, col.bounds.center.z), col.radius * .9f, capaPiso);
     }
 }

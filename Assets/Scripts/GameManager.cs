@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private Enemigo enemigo_prefab;
 
     [SerializeField]
-    private Transform[] posicionesSpawn;
+    private GameObject posicionesSpawn;
 
     [Header("Interfaz de usuario")]
     [SerializeField]
@@ -80,10 +80,13 @@ public class GameManager : MonoBehaviour
     }
     private void ComenzarJuego()
     {
-        foreach (Transform spawnPoint in posicionesSpawn)
+        foreach (Transform child in posicionesSpawn.transform.GetComponentsInChildren<Transform>())
         {
-            Instantiate(enemigo_prefab, spawnPoint.position, Quaternion.identity);
-            totalEnemyCount++;
+            if (child != posicionesSpawn.transform)
+            {
+                Instantiate(enemigo_prefab, child.position, Quaternion.identity);
+                totalEnemyCount++;
+            }
         }
 
         StartCoroutine(ComenzarCronometro());        

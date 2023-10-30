@@ -10,10 +10,10 @@ public class PlayerController : MonoBehaviour
     // Constantes
     [Header("Movimiento")]
     [SerializeField]
-    private float velocidad = 15f;
+    private float velocidad = 60f;
     [Header("Drag")]
     [SerializeField]
-    private float drag = 5f;
+    private float drag = 25f;
     [SerializeField]
     private ForceMode modoDrag;
 
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     void mover()
     {
         if((Input.GetAxisRaw("Horizontal") == 0 &&
-            Input.GetAxisRaw("Vertical") == 0) || !onFloor())
+            Input.GetAxisRaw("Vertical") == 0))
         {
             return;
         }
@@ -63,12 +63,7 @@ public class PlayerController : MonoBehaviour
         Vector3 movimientoJugador = transform.right * x + transform.forward * z;
         movimientoJugador = movimientoJugador.normalized * velocidad * Time.deltaTime;
 
-        // Añadimos en el eje y del vector dirección el valor actual de la velocidad del rigidbody en y
-        // Esto es porque usamos el modo Velocity Change, por lo que si es 0 la velocidad que el rb reciba
-        // en ese eje se anula. 
-        Vector3 direccion = new Vector3(movimientoJugador.x, rb.velocity.y, movimientoJugador.z);
-
-        rb.AddForce(direccion, ForceMode.VelocityChange);
+        rb.AddForce(movimientoJugador, ForceMode.VelocityChange);
 
     }
 
